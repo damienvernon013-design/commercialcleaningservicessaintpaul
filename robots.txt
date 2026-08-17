@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://commercialcleaningservicessaintpaul.com/sitemap.xml
