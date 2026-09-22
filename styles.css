@@ -520,3 +520,16 @@ li { margin-bottom: 0.35rem; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+/* Blog */
+.blog-list-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+.blog-list-item h2 { margin-bottom: 0.35rem; }
+.blog-list-item h2 a { color: var(--primary); text-decoration: none; }
+.blog-list-item h2 a:hover { text-decoration: underline; }
+.blog-meta { color: #64748b; font-size: 0.85rem; margin-bottom: 0.5rem; }
+.blog-post-body { max-width: 720px; line-height: 1.7; }
+.blog-post-body h2 { margin-top: 2rem; }
+.blog-post-body img { max-width: 100%; height: auto; border-radius: 6px; }

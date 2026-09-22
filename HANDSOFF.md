@@ -3,9 +3,16 @@
 **Status: READY TO LAUNCH**
 
 ## What this is
-Static 43-page commercial cleaning microsite (Saint Paul, MN) plus a Vercel serverless function that pushes quote/contact form submissions into the CRM-QM system. No build step, no framework — plain HTML/CSS/JS deployed as-is.
+Static 68-page commercial cleaning microsite (Saint Paul, MN) plus a Vercel serverless function that pushes quote/contact form submissions into the CRM-QM system. No build step, no framework — plain HTML/CSS/JS deployed as-is.
 
-## What was done in this pass
+## Latest pass: blog section added, DB approach scrapped
+Added a `/blog/` section: 25 static posts + a `/blog/index.html` hub, built from a source content pack originally written for a different brand and rewritten for this site (brand name/phone, CTAs to `/request-a-quote/`, pricing figures matched to the already-sanctioned QA.md ranges, no fabricated study citations, off-scope verticals like gyms/restaurants/schools reframed as general guidance since this site's quote form doesn't cover those facility types).
+
+An earlier attempt in this same effort built a Supabase-backed dynamic blog route (`api/blog.js`, `api/_layout.js`, a `posts` table, `package.json` for `@supabase/supabase-js`). That was scrapped in favor of static HTML matching the existing `/resources/*` template, to keep the site's zero-dependency architecture intact. All of that DB-driven code, the `vercel.json` rewrites that pointed to it, and local `.env.local*` files have been deleted. **The `posts` table still exists in Supabase** (nothing in the repo references it anymore) — drop it manually via the Supabase SQL editor if you want it gone; it wasn't touched since this repo has no way to run DDL against it.
+
+New files: `blog/index.html` + `blog/<slug>/index.html` × 25. Updated: `sitemap.xml` (+25 URLs, 69 total), `CLAUDE.md` (Blog section + page count).
+
+## What was done in an earlier pass (CRM integration)
 1. Removed a stray empty directory left over from the original build (`{about,contact,...}` — a literal brace-expansion typo, never used).
 2. Built `api/lead.js` — a Vercel serverless function that:
    - Accepts `POST` JSON from the site's forms
