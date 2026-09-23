@@ -13,6 +13,7 @@ A static local-SEO microsite (68 pages: 43 original + 25 blog posts) for a comme
 - `sitemap.xml` / `robots.txt` — 69 indexed URLs; `/thank-you/` is intentionally excluded (`noindex`)
 - `QA.md` — the original build's QA checklist (content facts, town verification, theme spec). Treat as source of truth for what content decisions were already made and why.
 - `HANDSOFF.md` — most recent handoff notes; read this first when picking up work.
+- `PLAYBOOK.md` — step-by-step procedure for replicating this site's blog section and quote wizard on the other ~59 sites in the portfolio (each targeting a different domain/city/ZIP). Read this before rebuilding either feature elsewhere.
 
 ## Working conventions
 - **Every page shares identical header/nav/footer markup.** If you change one, use the shared pattern (grep for the block, `sed`/multi-file edit) rather than hand-editing 43 files inconsistently.
