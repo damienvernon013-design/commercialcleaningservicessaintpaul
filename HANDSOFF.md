@@ -3,9 +3,12 @@
 **Status: READY TO LAUNCH**
 
 ## What this is
-Static 68-page commercial cleaning microsite (Saint Paul, MN) plus a Vercel serverless function that pushes quote bookings into the CRM-QM system via a multi-step appointment wizard. No build step, no framework — plain HTML/CSS/JS deployed as-is.
+Static 70-page commercial cleaning microsite (Saint Paul, MN) plus a Vercel serverless function that pushes quote bookings into the CRM-QM system via a multi-step appointment wizard. No build step, no framework — plain HTML/CSS/JS deployed as-is.
 
-## Latest pass: multi-step quote wizard replaces the simple lead form
+## Latest pass: footer attribution + replication playbook
+Added a "Built and Maintained by Infin8Content" credit line (linking to `https://infin8content.com/`, opens in a new tab) to the `.footer-bottom` block on all 70 pages — verified zero pages missing it. Also added `PLAYBOOK.md`: a step-by-step procedure for replicating this site's blog section and CRM quote wizard on the other ~59 sites in the portfolio, each targeting a different domain/city/ZIP. It documents which values are fixed (CRM endpoint, question/answer IDs, industries list) vs. must change per site (`ZIP_DEFAULT`, `ADDRESS_DEFAULT`, `SITE_SOURCE_TAG`, CORS origin), and calls out `SITE_SOURCE_TAG` as mandatory since `CRM_API_TOKEN` is shared across the whole portfolio with no other way to attribute a lead to its source domain. `CLAUDE.md` now links to it.
+
+## Earlier pass: multi-step quote wizard replaces the simple lead form
 The old single-step quote form (name/phone/email/sqft/type/frequency → `api/lead.js` → CRM `notes` field) is retired. `/request-a-quote/` now embeds a full multi-step booking wizard (`assets/js/quote-wizard.js`) that walks the visitor through the CRM's actual fixed questionnaire (cleaning frequency, current situation, current-provider gaps, satisfaction rating, day/after-hours preference, how many companies to meet), books 1-5 real appointment slots (date + time, CRM-validated to weekdays 2+ days out with a 90-minute same-day spacing guard we added on top), collects contact/company/industry details, and shows a review screen before submitting to a new `api/submit-lead.js` that maps directly to the CRM's native `questions[]`/`appointments[]`/`industry` schema instead of folding everything into a `notes` string.
 
 The home hero and `/contact/` forms are now short teasers (`[data-lead-teaser]`, name/phone/sqft) that GET-submit to `/request-a-quote/?name=...&phone=...&sqft=...`; the wizard reads those via `prefillFromQuery()` and starts pre-filled. `api/lead.js` and the `data-lead-form`/`fetch` submit handler in `forms.js` were deleted — `forms.js` now only captures UTM params into `localStorage`, nothing submits through it anymore.
@@ -25,7 +28,7 @@ An earlier attempt in this same effort built a Supabase-backed dynamic blog rout
 
 New files: `blog/index.html` + `blog/<slug>/index.html` × 25. Updated: `sitemap.xml` (+25 URLs, 69 total), `CLAUDE.md` (Blog section + page count).
 
-## What was done in the original pass (CRM integration, now superseded above)
+## Earliest pass (CRM integration, now superseded above)
 1. Removed a stray empty directory left over from the original build (`{about,contact,...}` — a literal brace-expansion typo, never used).
 2. Built `api/lead.js` — a Vercel serverless function that:
    - Accepts `POST` JSON from the site's forms

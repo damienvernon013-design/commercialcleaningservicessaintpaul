@@ -1,7 +1,7 @@
 # CLAUDE.md — commercialcleaningservicessaintpaul.com
 
 ## What this project is
-A static local-SEO microsite (68 pages: 43 original + 25 blog posts) for a commercial cleaning company serving Saint Paul, MN and 8 surrounding towns. Plain HTML/CSS + one Vercel serverless function. No framework, no build step, no package.json.
+A static local-SEO microsite (70 pages total: 44 original/core pages + 25 blog posts + 1 blog hub) for a commercial cleaning company serving Saint Paul, MN and 8 surrounding towns. Plain HTML/CSS + one Vercel serverless function. No framework, no build step, no package.json.
 
 ## Structure
 - Every page is `<dir>/index.html` for clean `/path/` URLs (e.g. `/service-areas/roseville/`)
@@ -22,6 +22,7 @@ A static local-SEO microsite (68 pages: 43 original + 25 blog posts) for a comme
 - **No CLI-based Vercel verification** — the repo is already linked to Vercel; pushing to `main` triggers the deploy. Don't attempt `vercel` CLI commands.
 - Content facts (town distances, market pricing ranges, insurance language) were deliberately researched/verified per `QA.md` — don't invent new stats, testimonials, reviews, or dollar figures. If something looks like a placeholder, check `QA.md` first; it may be an intentional non-disclosure (e.g. no invented policy numbers).
 - Phone number `(866) 958-8773` and email `ops@thequotemasters.com` are shared across the portfolio — don't change them without explicit instruction.
+- Every page's footer `.footer-bottom` block ends with a `"Built and Maintained by Infin8Content"` credit linking to `https://infin8content.com/` (`target="_blank" rel="noopener"`) — keep this in place if you touch the shared footer pattern; verified present on all 70 pages.
 
 ## Quote wizard (assets/js/quote-wizard.js + api/submit-lead.js)
 - **This is the only lead-capture flow on the site.** `/request-a-quote/` embeds the full multi-step wizard (`[data-quote-wizard]` form). The home hero and `/contact/` keep short teaser forms (`[data-lead-teaser]`, name/phone/sqft) that GET-submit to `/request-a-quote/?name=...&phone=...&sqft=...`, which the wizard reads via `prefillFromQuery()` to prefill step 1. There is no other submission path — don't reintroduce a `data-lead-form`/`fetch`-based simple form; that pattern (`api/lead.js`) was retired in favor of this wizard.
