@@ -533,3 +533,116 @@ li { margin-bottom: 0.35rem; }
 .blog-post-body { max-width: 720px; line-height: 1.7; }
 .blog-post-body h2 { margin-top: 2rem; }
 .blog-post-body img { max-width: 100%; height: auto; border-radius: 6px; }
+
+/* Quote wizard */
+.wiz-wrap { margin-top: 2.5rem; }
+.wiz-card { max-width: 720px; width: 100%; padding: 2rem; }
+.wiz-card h2 { font-size: 1.3rem; margin-bottom: 1.25rem; }
+
+.wiz-progress { margin-bottom: 1.5rem; }
+.wiz-progress-bar {
+  display: block;
+  height: 6px;
+  background: var(--border);
+  overflow: hidden;
+}
+.wiz-progress-fill {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.2s ease;
+}
+.wiz-progress-label {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.wiz-fieldset { border: none; }
+.wiz-legend {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  padding: 0;
+}
+.wiz-hint { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; }
+
+.wiz-options { display: flex; flex-direction: column; gap: 0.6rem; }
+.wiz-option {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.wiz-option:hover { border-color: var(--accent); }
+.wiz-option.is-selected {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+.wiz-option-input { flex-shrink: 0; width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; }
+.wiz-option-label { font-size: 0.92rem; }
+
+.wiz-slot {
+  border: 1px solid var(--border);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.wiz-slot-title { font-size: 0.95rem; color: var(--primary); margin-bottom: 0.75rem; }
+.wiz-slot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 480px) {
+  .wiz-slot-grid { grid-template-columns: 1fr; }
+}
+
+.wiz-review-heading { font-size: 1.15rem; color: var(--primary); margin-bottom: 1rem; }
+.wiz-review-card {
+  border: 1px solid var(--border);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+.wiz-review-card h4 { font-size: 0.95rem; color: var(--primary); margin-bottom: 0.6rem; }
+.wiz-review-list { display: grid; grid-template-columns: 1fr; gap: 0.35rem; }
+.wiz-review-list dt { font-size: 0.78rem; color: var(--text-muted); font-weight: bold; margin-top: 0.5rem; }
+.wiz-review-list dd { font-size: 0.9rem; }
+
+.wiz-terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  margin: 1rem 0;
+  cursor: pointer;
+}
+.wiz-terms input { margin-top: 0.2rem; accent-color: var(--accent); cursor: pointer; }
+
+.wiz-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.wiz-nav-btn { width: auto; padding: 0.75rem 2rem; flex: 0 0 auto; }
+.wiz-nav:has([data-wizard-back][hidden]) { justify-content: flex-end; }
+
+.wiz-done { text-align: center; padding: 2rem 0; }
+.wiz-done h2 { color: var(--primary); margin-bottom: 0.75rem; }
+.wiz-done-list { list-style: none; margin: 1.25rem 0; text-align: left; }
+.wiz-done-list li {
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--border);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-status-message { min-height: 1.2rem; }
+.form-status-error { color: #b3261e; font-size: 0.85rem; margin-top: 0.5rem; }
+.form-status-success { color: var(--primary); font-size: 0.85rem; margin-top: 0.5rem; }

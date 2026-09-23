@@ -3,16 +3,29 @@
 **Status: READY TO LAUNCH**
 
 ## What this is
-Static 68-page commercial cleaning microsite (Saint Paul, MN) plus a Vercel serverless function that pushes quote/contact form submissions into the CRM-QM system. No build step, no framework — plain HTML/CSS/JS deployed as-is.
+Static 68-page commercial cleaning microsite (Saint Paul, MN) plus a Vercel serverless function that pushes quote bookings into the CRM-QM system via a multi-step appointment wizard. No build step, no framework — plain HTML/CSS/JS deployed as-is.
 
-## Latest pass: blog section added, DB approach scrapped
+## Latest pass: multi-step quote wizard replaces the simple lead form
+The old single-step quote form (name/phone/email/sqft/type/frequency → `api/lead.js` → CRM `notes` field) is retired. `/request-a-quote/` now embeds a full multi-step booking wizard (`assets/js/quote-wizard.js`) that walks the visitor through the CRM's actual fixed questionnaire (cleaning frequency, current situation, current-provider gaps, satisfaction rating, day/after-hours preference, how many companies to meet), books 1-5 real appointment slots (date + time, CRM-validated to weekdays 2+ days out with a 90-minute same-day spacing guard we added on top), collects contact/company/industry details, and shows a review screen before submitting to a new `api/submit-lead.js` that maps directly to the CRM's native `questions[]`/`appointments[]`/`industry` schema instead of folding everything into a `notes` string.
+
+The home hero and `/contact/` forms are now short teasers (`[data-lead-teaser]`, name/phone/sqft) that GET-submit to `/request-a-quote/?name=...&phone=...&sqft=...`; the wizard reads those via `prefillFromQuery()` and starts pre-filled. `api/lead.js` and the `data-lead-form`/`fetch` submit handler in `forms.js` were deleted — `forms.js` now only captures UTM params into `localStorage`, nothing submits through it anymore.
+
+CRM contract details (verified against the live endpoint 2026-08-28, documented in comments in `api/submit-lead.js`): appointment dates must be `>= today+2` and Mon–Fri; the quote-count field is `num_of_quotes` (the published API doc's `number_of_quotes` is rejected); a successful push is `ResponseCode` `200`/`201` in the response body, not just an HTTP 200. The server re-validates everything independently of the client wizard.
+
+**Important CRM attribution fix included in this pass:** `CRM_API_TOKEN` is shared across the whole portfolio (60+ sites per the client), and the `PushLead` schema has no dedicated site-id field — so without an explicit tag, every lead from every site would look identical on the CRM side. `api/submit-lead.js` now prepends `"Site: commercialcleaningservicessaintpaul.com"` to `customer.notes` on every submission so leads stay traceable to this domain. If you're porting this wizard to another site in the portfolio, **make sure to change `SITE_SOURCE_TAG` in `api/submit-lead.js`** — copying this file as-is to another site would tag its leads as coming from this one.
+
+**Not yet manually tested in a real browser** — no browser automation tool was available in this session. Verified: JS syntax (`node --check`) on all three new/changed scripts, the wizard's expected `data-wizard-*` DOM hooks are present in the served HTML, and no leftover references to the old `api/lead`/`data-lead-form` flow anywhere in the repo. **You should click through the wizard on a preview deploy before treating this as production-ready** — multi-step state, appointment date/time validation, and the CRM submit path have only been reviewed by reading the code, not exercised in a browser.
+
+New/changed files: `api/submit-lead.js` (new, replaces `api/lead.js`), `assets/js/quote-wizard.js` (new), `request-a-quote/index.html` (wizard markup), `index.html` + `contact/index.html` (teaser forms), `forms.js` (trimmed to UTM-only), `styles.css` (wizard CSS appended). Deleted: `api/lead.js`.
+
+## Earlier pass: blog section added, DB approach scrapped
 Added a `/blog/` section: 25 static posts + a `/blog/index.html` hub, built from a source content pack originally written for a different brand and rewritten for this site (brand name/phone, CTAs to `/request-a-quote/`, pricing figures matched to the already-sanctioned QA.md ranges, no fabricated study citations, off-scope verticals like gyms/restaurants/schools reframed as general guidance since this site's quote form doesn't cover those facility types).
 
 An earlier attempt in this same effort built a Supabase-backed dynamic blog route (`api/blog.js`, `api/_layout.js`, a `posts` table, `package.json` for `@supabase/supabase-js`). That was scrapped in favor of static HTML matching the existing `/resources/*` template, to keep the site's zero-dependency architecture intact. All of that DB-driven code, the `vercel.json` rewrites that pointed to it, and local `.env.local*` files have been deleted. **The `posts` table still exists in Supabase** (nothing in the repo references it anymore) — drop it manually via the Supabase SQL editor if you want it gone; it wasn't touched since this repo has no way to run DDL against it.
 
 New files: `blog/index.html` + `blog/<slug>/index.html` × 25. Updated: `sitemap.xml` (+25 URLs, 69 total), `CLAUDE.md` (Blog section + page count).
 
-## What was done in an earlier pass (CRM integration)
+## What was done in the original pass (CRM integration, now superseded above)
 1. Removed a stray empty directory left over from the original build (`{about,contact,...}` — a literal brace-expansion typo, never used).
 2. Built `api/lead.js` — a Vercel serverless function that:
    - Accepts `POST` JSON from the site's forms
@@ -34,7 +47,7 @@ New files: `blog/index.html` + `blog/<slug>/index.html` × 25. Updated: `sitemap
 2. Add `CRM_API_TOKEN` = (the token from the CRM-QM API doc you have) for **Production** (and Preview if you want form testing on preview deployments)
 3. Redeploy (or it'll pick it up on the next deploy)
 
-Without this, `/api/lead` returns a 500 with "Server is not configured to accept leads yet" — forms will show an error but won't crash the site.
+Without this, `/api/submit-lead` returns a 500 ("Server not configured") — the wizard will show an inline error but won't crash the site.
 
 ## Not done / explicitly out of scope this pass
 - **No automated testing** — per instruction, no CI/test suite was set up. No CLI-based Vercel verification either (repo is already linked to Vercel; deploys happen on push).

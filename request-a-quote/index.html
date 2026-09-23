@@ -71,72 +71,19 @@
         </div>
         <p>We are available by phone at <a href="tel:+18669588773">(866) 958-8773</a> during business hours (Mon–Fri 8:30am–5:00pm) if you prefer to talk first.</p>
       </div>
-      <div>
-        <div class="quote-form-card">
-          <h2>Request a Written Quote</h2>
-          <form data-lead-form>
-            <div class="form-group">
-              <label for="q-name">Full name</label>
-              <input type="text" id="q-name" name="name" required>
-            </div>
-            <div class="form-group">
-              <label for="q-title">Your title / role</label>
-              <input type="text" id="q-title" name="title" placeholder="Office manager, property manager, etc.">
-            </div>
-            <div class="form-group">
-              <label for="q-company">Company or property name</label>
-              <input type="text" id="q-company" name="company" required>
-            </div>
-            <div class="form-group">
-              <label for="q-phone">Phone</label>
-              <input type="tel" id="q-phone" name="phone" required>
-            </div>
-            <div class="form-group">
-              <label for="q-email">Email</label>
-              <input type="email" id="q-email" name="email" required>
-            </div>
-            <div class="form-group">
-              <label for="q-sqft">Approximate sq footage</label>
-              <select id="q-sqft" name="sqft">
-                <option value="">Select range</option>
-                <option>Under 2,000 sq ft</option>
-                <option>2,000–5,000 sq ft</option>
-                <option>5,000–10,000 sq ft</option>
-                <option>10,000–25,000 sq ft</option>
-                <option>Over 25,000 sq ft</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="q-type">Facility type</label>
-              <select id="q-type" name="type">
-                <option value="">Select type</option>
-                <option>Office building</option>
-                <option>Medical / dental suite</option>
-                <option>Retail storefront</option>
-                <option>Light industrial / warehouse</option>
-                <option>Multi-tenant commercial</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="q-freq">Desired frequency</label>
-              <select id="q-freq" name="frequency">
-                <option value="">Select frequency</option>
-                <option>Nightly (5x/week)</option>
-                <option>3x per week</option>
-                <option>Weekly</option>
-                <option>One-time or periodic</option>
-                <option>Not sure</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="q-notes">Anything else we should know</label>
-              <textarea id="q-notes" name="notes" placeholder="Special requirements, current problems, timeline, etc."></textarea>
-            </div>
-            <button type="submit" class="btn">Submit Quote Request</button>
-          </form>
-          <p class="form-note">We respond the next business day. Your information is not shared or used for marketing.</p>
-        </div>
+    </div>
+    <div class="wiz-wrap">
+      <div class="quote-form-card wiz-card">
+        <h2>Request a Written Quote</h2>
+        <form data-quote-wizard novalidate>
+          <div data-wizard-progress class="wiz-progress"></div>
+          <div data-wizard-steps class="wiz-steps"></div>
+          <p data-wizard-status class="form-status-message" role="alert"></p>
+          <div data-wizard-nav class="wiz-nav">
+            <button type="button" data-wizard-back class="btn btn--secondary wiz-nav-btn" hidden>Back</button>
+            <button type="submit" data-wizard-next class="btn wiz-nav-btn">Next</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -190,5 +137,6 @@
   </div>
 </footer>
 <script src="/forms.js" defer></script>
+<script src="/assets/js/quote-wizard.js" defer></script>
 </body>
 </html>
