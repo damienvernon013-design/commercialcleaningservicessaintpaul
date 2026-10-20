@@ -5,7 +5,12 @@
 ## What this is
 Static 70-page commercial cleaning microsite (Saint Paul, MN) plus a Vercel serverless function that pushes quote bookings into the CRM-QM system via a multi-step appointment wizard. No build step, no framework — plain HTML/CSS/JS deployed as-is.
 
-## Latest pass: footer attribution + replication playbook
+## Latest pass: all CTAs redirected to teamleadgeneration.com
+Every quote CTA now points to `https://teamleadgeneration.com/contact/`: 282 `href="/request-a-quote/"` links across the HTML pages were rewritten, and the two teaser forms (home hero, `/contact/`) now GET-submit to the external URL (name/phone/sqft arrive as query params). `vercel.json` has a temporary (302) redirect `/request-a-quote/` → the external URL, and `/request-a-quote/` was removed from `sitemap.xml` (now 68 indexed URLs). The 70 internal `/contact/` nav links were deliberately left alone (navigation, not CTAs).
+
+**The wizard is now dormant, not deleted:** `request-a-quote/index.html`, `assets/js/quote-wizard.js` and `api/submit-lead.js` remain in the repo but are unreachable via the redirect. To restore the on-site wizard, remove the `redirects` entry from `vercel.json`, revert the CTA hrefs/form actions to `/request-a-quote/`, and re-add the sitemap entry. Not yet verified on a live deploy.
+
+## Earlier pass: footer attribution + replication playbook
 Added a "Built and Maintained by Infin8Content" credit line (linking to `https://infin8content.com/`, opens in a new tab) to the `.footer-bottom` block on all 70 pages — verified zero pages missing it. Also added `PLAYBOOK.md`: a step-by-step procedure for replicating this site's blog section and CRM quote wizard on the other ~59 sites in the portfolio, each targeting a different domain/city/ZIP. It documents which values are fixed (CRM endpoint, question/answer IDs, industries list) vs. must change per site (`ZIP_DEFAULT`, `ADDRESS_DEFAULT`, `SITE_SOURCE_TAG`, CORS origin), and calls out `SITE_SOURCE_TAG` as mandatory since `CRM_API_TOKEN` is shared across the whole portfolio with no other way to attribute a lead to its source domain. `CLAUDE.md` now links to it.
 
 ## Earlier pass: multi-step quote wizard replaces the simple lead form

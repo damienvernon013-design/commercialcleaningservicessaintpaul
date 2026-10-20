@@ -10,7 +10,7 @@ A static local-SEO microsite (70 pages total: 44 original/core pages + 25 blog p
 - `assets/js/quote-wizard.js` — multi-step appointment-booking wizard driving `/request-a-quote/`
 - `api/submit-lead.js` — Vercel serverless function proxying wizard bookings to the CRM-QM API
 - `blog/` — 25 static blog posts + `/blog/index.html` hub, same template as `/resources/*` (see Blog section below)
-- `sitemap.xml` / `robots.txt` — 69 indexed URLs; `/thank-you/` is intentionally excluded (`noindex`)
+- `sitemap.xml` / `robots.txt` — 68 indexed URLs (69 before the quote page was dropped); `/thank-you/` is intentionally excluded (`noindex`)
 - `QA.md` — the original build's QA checklist (content facts, town verification, theme spec). Treat as source of truth for what content decisions were already made and why.
 - `HANDSOFF.md` — most recent handoff notes; read this first when picking up work.
 - `PLAYBOOK.md` — step-by-step procedure for replicating this site's blog section and quote wizard on the other ~59 sites in the portfolio (each targeting a different domain/city/ZIP). Read this before rebuilding either feature elsewhere.
@@ -24,7 +24,12 @@ A static local-SEO microsite (70 pages total: 44 original/core pages + 25 blog p
 - Phone number `(866) 958-8773` and email `ops@thequotemasters.com` are shared across the portfolio — don't change them without explicit instruction.
 - Every page's footer `.footer-bottom` block ends with a `"Built and Maintained by Infin8Content"` credit linking to `https://infin8content.com/` (`target="_blank" rel="noopener"`) — keep this in place if you touch the shared footer pattern; verified present on all 70 pages.
 
-## Quote wizard (assets/js/quote-wizard.js + api/submit-lead.js)
+## CTA redirect (current state)
+- **All CTAs point to `https://teamleadgeneration.com/contact/`** (former `/request-a-quote/` links, plus the home/`/contact/` teaser form actions). `vercel.json` also 302-redirects `/request-a-quote/` there, and that URL is out of `sitemap.xml` (68 URLs). Internal `/contact/` nav links are unchanged.
+- New CTAs must use the external URL, not `/request-a-quote/`.
+- The wizard section below describes dormant code (still in the repo, unreachable). Treat "only lead-capture flow" there as historical until the redirect is removed.
+
+## Quote wizard (assets/js/quote-wizard.js + api/submit-lead.js) — currently dormant
 - **This is the only lead-capture flow on the site.** `/request-a-quote/` embeds the full multi-step wizard (`[data-quote-wizard]` form). The home hero and `/contact/` keep short teaser forms (`[data-lead-teaser]`, name/phone/sqft) that GET-submit to `/request-a-quote/?name=...&phone=...&sqft=...`, which the wizard reads via `prefillFromQuery()` to prefill step 1. There is no other submission path — don't reintroduce a `data-lead-form`/`fetch`-based simple form; that pattern (`api/lead.js`) was retired in favor of this wizard.
 - The wizard asks the CRM's fixed questionnaire (frequency, current situation, current-provider gaps, satisfaction rating, day/after-hours preference, how many companies to meet), then books 1-5 appointment slots (date + time), then collects contact/company details, then shows a review screen before submit.
 - `INDUSTRIES` in `quote-wizard.js` is the CRM's full fixed list (40+ generic industries, including several that don't apply to this business, e.g. car dealerships, funeral homes) — kept as-is intentionally since the CRM's numeric industry IDs are fixed and the list isn't filtered per-site. Don't trim it without checking the CRM schema still accepts the removed IDs elsewhere.

@@ -1,4 +1,7 @@
 {
   "cleanUrls": true,
-  "trailingSlash": true
+  "trailingSlash": true,
+  "redirects": [
+    { "source": "/request-a-quote/", "destination": "https://teamleadgeneration.com/contact/", "permanent": false }
+  ]
 }
